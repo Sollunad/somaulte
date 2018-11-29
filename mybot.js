@@ -1,27 +1,31 @@
 const Discord = require("discord.js");
+const Enmap = require("enmap");
+const fs = require("fs");
 const client = new Discord.Client();
 const config = require("./config.json");
+// We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
+client.config = config;
 
-client.on("ready", () => {
-    console.log("I am ready!");
+fs.readdir("./events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    const event = require(`./events/${file}`);
+    let eventName = file.split(".")[0];
+    client.on(eventName, event.bind(null, client));
+  });
 });
 
-client.on("message", (message) => {
-    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+client.commands = new Enmap();
 
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-
-    if (command === 'ulte') {
-        message.channel.send("Soma Ulte?");
-    } else if (command === 'help') {
-        message.channel.send("Noch keine Hilfe für dich :c");
-    } else if (command === 'nani' || command === 'nani?') {
-        message.channel.send("Fucking weebs");
-    } else if (command === '?') {
-        let text = args.join(" ");
-        message.channel.send("Soma " + text + "?");
-    }
+fs.readdir("./commands/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    if (!file.endsWith(".js")) return;
+    let props = require(`./commands/${file}`);
+    let commandName = file.split(".")[0];
+    console.log(`Attempting to load command ${commandName}`);
+    client.commands.set(commandName, props);
+  });
 });
 
 client.login(config.token);
