@@ -6,11 +6,15 @@ exports.run = (client, message, args) => {
   const emptyString = "Niemand";
 
   let embed = new Discord.RichEmbed({
-      title: 'Fraktal-Run heute!',
+      title: 'Nächster Fraktal-Run!',
       description: 'Vorschlag: ' + args[0] + ' Uhr',
+      thumbnail: {
+        url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
+      },
+      color: 12470271,
       fields: [
-          {name: 'Zugesagt', value: emptyString},
-          {name: 'Abgesagt', value: emptyString}
+          {name: 'Zugesagt ✅', value: emptyString},
+          {name: 'Abgesagt ❎', value: emptyString}
       ]
   });
 
@@ -63,6 +67,10 @@ exports.run = (client, message, args) => {
         const newEmbed = new Discord.RichEmbed({
             title: embed.title,
             description: embed.description,
+            thumbnail: {
+              url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
+            },
+            color: 12470271,
             fields: [ embedYesField, embedNoField ]
         });
 
