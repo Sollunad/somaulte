@@ -2,8 +2,12 @@ const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
-
   const emptyString = "Niemand";
+
+  const serverEmojis = message.guild.emojis;
+  //TODO: Fetch Dailies
+  const daily = ["Snowblind", "SolidOcean", "Nightmare"];
+  const dailyString = serverEmojis.filter(emoji => daily.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " - " + emoji.name).join("\n");
 
   let embed = new Discord.RichEmbed({
       title: 'Nächster Fraktal-Run!',
@@ -13,6 +17,7 @@ exports.run = (client, message, args) => {
       },
       color: 12470271,
       fields: [
+          {name: 'Dailies', value: dailyString},
           {name: 'Zugesagt ✅', value: emptyString},
           {name: 'Abgesagt ❎', value: emptyString}
       ]
@@ -29,8 +34,8 @@ exports.run = (client, message, args) => {
 
       // set collector events
       collector.on('collect', r => {
-        let embedYesField = Object.assign({}, embed.fields[0]);
-        let embedNoField = Object.assign({}, embed.fields[1]);
+        let embedYesField = Object.assign({}, embed.fields[1]);
+        let embedNoField = Object.assign({}, embed.fields[2]);
 
         let users = r.users.filter(user => !user.bot);
         if (users.size == 0) return;
@@ -71,7 +76,9 @@ exports.run = (client, message, args) => {
               url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
             },
             color: 12470271,
-            fields: [ embedYesField, embedNoField ]
+            fields: [
+              {name: 'Dailies', value: dailyString},
+              embedYesField, embedNoField ]
         });
 
         users.forEach(user => r.remove(user).catch(console.log));
