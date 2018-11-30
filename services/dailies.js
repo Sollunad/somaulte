@@ -6,8 +6,9 @@ async function t4Dailies() {
 }
 
 async function getFractals() {
-    const fDailies = await getDailies();
-    const idString = await fDailies.map(a => a.id).join(',');
+    const dailies = await getDailies();
+    const fractalDailies = await dailies.fractals;
+    const idString = await fractalDailies.map(a => a.id).join(',');
     const baseUrl = 'https://api.guildwars2.com/v2/achievements?lang=en&ids=';
     const url = await baseUrl + idString;
     const response = await sf.get(url);
@@ -17,12 +18,8 @@ async function getFractals() {
 async function getDailies(){
     const url = 'https://api.guildwars2.com/v2/achievements/daily';
     const response = await sf.get(url);
-    return await response.body.fractals;
+    return await response.body;
 }
 
-exports.fractals = async() => {
-   const dailies = await t4Dailies();
-   await console.log(dailies);
-   return await dailies;
-}
+exports.fractals = t4Dailies();
 

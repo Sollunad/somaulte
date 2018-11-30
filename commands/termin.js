@@ -6,12 +6,12 @@ exports.run = async (client, message, args) => {
   const emptyString = "Niemand";
 
   const serverEmojis = message.guild.emojis;
-  const daily = await dailies.fractals();
+  const daily = await dailies.fractals;
   const dailyString = await serverEmojis.filter(emoji => daily.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
 
   let embed = await new Discord.RichEmbed({
       title: 'Nächster Fraktal-Run!',
-      description: 'Vorschlag: ' + args[0] + ' Uhr',
+      description: 'Vorschlag: **' + args[0] + ' Uhr**',
       thumbnail: {
         url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
       },
