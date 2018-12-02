@@ -11,7 +11,7 @@ exports.run = async (client, message, args) => {
 
   let embed = await new Discord.RichEmbed({
       title: 'Nächster Fraktal-Run!',
-      description: 'Vorschlag: **' + args[0] + ' Uhr**',
+      description: `Vorschlag: **${args[0]} Uhr**`,
       thumbnail: {
         url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
       },
@@ -37,34 +37,34 @@ exports.run = async (client, message, args) => {
         let embedYesField = Object.assign({}, embed.fields[1]);
         let embedNoField = Object.assign({}, embed.fields[2]);
 
-        let users = r.users.filter(user => !user.bot);
-        if (users.size == 0) return;
+        if (!r.users.some(user => !user.bot)) return;
 
         let yes = embedYesField.value.split("\n");
         let no = embedNoField.value.split("\n");
 
-        let reactor = users.first().username;
+        let user = r.users.filter(user => !user.bot).first();
+        let reactor = user.username;
 
         if (r.emoji.name === '✅') {
-          no = no.filter(user => user != reactor);
+          no = no.filter(u => !u.equals(reactor));
           if (yes.indexOf(reactor) == -1) {
             yes.push(reactor);
-            yes = yes.filter(user => user != emptyString)
+            yes = yes.filter(u => !u.equals(emptyString));
           }
         } else if (r.emoji.name === '❎'){
-          yes = yes.filter(user => user != reactor);
+          yes = yes.filter(u => !u.equals(reactor));
           if (no.indexOf(reactor) == -1) {
             no.push(reactor);
-            no = no.filter(user => user != emptyString)
+            no = no.filter(u => !u.equals(emptyString))
           }
         }
 
-        embedYesField.value = yes.join("\n");
-        if (embedYesField.value == "") {
+        embedYesField.value = yes.join('\n');
+        if (embedYesField.value.equals('')) {
           embedYesField.value = emptyString;
         }
-        embedNoField.value = no.join("\n");
-        if (embedNoField.value == "") {
+        embedNoField.value = no.join('\n');
+        if (embedNoField.value.equals('')) {
           embedNoField.value = emptyString;
         }
 
@@ -81,12 +81,11 @@ exports.run = async (client, message, args) => {
               embedYesField, embedNoField ]
         });
 
-        users.forEach(user => r.remove(user).catch(console.log));
+        r.remove(user).catch(console.log);
 
         // edit message with new embed
         // NOTE: can only edit messages you author
-        r.message.edit(newEmbed)
-        .catch(console.log);
+        r.message.edit(newEmbed).catch(console.log);
         embed = newEmbed;
       });
   })
