@@ -1,13 +1,13 @@
 const Discord = require("discord.js");
-const dailies = require("../services/dailies.js");
 
 exports.run = async (client, message, args) => {
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
   const serverEmojis = message.guild.emojis;
-  const daily = await dailies.fractals;
-  const dailyString = await serverEmojis.filter(emoji => daily.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
+  const dailies = require("../services/dailies.js");
+  const fractals = await dailies.fractals;
+  const dailyString = await serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
 
   let embed = await new Discord.RichEmbed({
       title: 'Nächster Fraktal-Run!',
