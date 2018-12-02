@@ -1,11 +1,11 @@
 const Discord = require("discord.js");
+const dailies = require("../services/dailies.js");
 
 exports.run = async (client, message, args) => {
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
   const serverEmojis = message.guild.emojis;
-  const dailies = require("../services/dailies.js");
   const fractals = await dailies.fractals;
   const dailyString = await serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
 
@@ -45,17 +45,18 @@ exports.run = async (client, message, args) => {
         let user = r.users.filter(user => !user.bot).first();
         let reactor = user.username;
 
+        //TODO u.equals?
         if (r.emoji.name === '✅') {
-          no = no.filter(u => !u.equals(reactor));
+          no = no.filter(u => u != reactor);
           if (yes.indexOf(reactor) == -1) {
             yes.push(reactor);
-            yes = yes.filter(u => !u.equals(emptyString));
+            yes = yes.filter(u => u != emptyString);
           }
         } else if (r.emoji.name === '❎'){
-          yes = yes.filter(u => !u.equals(reactor));
+          yes = yes.filter(u => u != reactor);
           if (no.indexOf(reactor) == -1) {
             no.push(reactor);
-            no = no.filter(u => !u.equals(emptyString))
+            no = no.filter(u => u != emptyString)
           }
         }
 
