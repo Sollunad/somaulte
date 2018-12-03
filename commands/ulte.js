@@ -6,3 +6,8 @@ const embed = new Discord.RichEmbed()
 exports.run = (client, message, args) => {
     message.channel.send({embed});
 };
+
+exports.help = {
+    usage: 'Soma Ulte',
+    desc: 'Soma Ulte?'
+};

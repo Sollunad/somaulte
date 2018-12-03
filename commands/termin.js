@@ -92,3 +92,8 @@ exports.run = async (client, message, args) => {
   })
   .catch(console.log);
 };
+
+exports.help = {
+    usage: 'Soma Termin [Uhrzeit]',
+    desc: 'Erstellt einen neuen Termin'
+};
