@@ -1,9 +1,9 @@
 exports.run = (client, message, args) => {
-    const commands = client.commands.indexes;
+    const commands = client.commands.array();
     commands.forEach(function(command) {
-       const help = client.commands.get(command).help;
+       const help = command.help;
        if (!help) return;
-       message.channel.send(`${help.usage}\n${help.desc}\n\n`);
+       message.channel.send(`**${help.usage}**\n${help.desc}\n\n\n`);
     });
 };
 
