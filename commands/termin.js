@@ -61,11 +61,11 @@ exports.run = async (client, message, args) => {
         }
 
         embedYesField.value = yes.join('\n');
-        if (embedYesField.value.equals('')) {
+        if (embedYesField.value == '') {
           embedYesField.value = emptyString;
         }
         embedNoField.value = no.join('\n');
-        if (embedNoField.value.equals('')) {
+        if (embedNoField.value == '') {
           embedNoField.value = emptyString;
         }
 
