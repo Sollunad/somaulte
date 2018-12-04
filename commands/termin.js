@@ -1,34 +1,18 @@
 const Discord = require("discord.js");
 
+let embed;
+
 exports.run = async (client, message, args) => {
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
-  const serverEmojis = message.guild.emojis;
-  delete require.cache[require.resolve("../services/dailies.js")];
-  const dailies = require("../services/dailies.js");
-  const fractals = await dailies.fractals;
-  const dailyString = await serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
-
-  let embed = await new Discord.RichEmbed({
-      title: 'Nächster Fraktal-Run!',
-      description: `Vorschlag: **${args[0]} Uhr**`,
-      thumbnail: {
-        url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
-      },
-      color: 12470271,
-      fields: [
-          {name: 'Dailies', value: dailyString},
-          {name: 'Zugesagt ✅', value: emptyString},
-          {name: 'Abgesagt ❎', value: emptyString}
-      ]
-  });
-
-    let embedWithoutDaily = new Discord.RichEmbed({
-        title: embed.title,
-        description: embed.description,
-        thumbnail: embed.thumbnail,
-        color: embed.color,
+   embed = new Discord.RichEmbed({
+        title: 'Nächster Fraktal-Run!',
+        description: `Vorschlag: **${args[0]} Uhr**`,
+        thumbnail: {
+            url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
+        },
+        color: 12470271,
         fields: [
             {name: 'Dailies', value: "Lädt..."},
             {name: 'Zugesagt ✅', value: emptyString},
@@ -37,13 +21,18 @@ exports.run = async (client, message, args) => {
     });
 
   // add reaction emoji to message
-  message.channel.send(embedWithoutDaily)
+
+  message.channel.send(embed)
   .then(msg => msg.react('✅'))
   .then(r => r.message.react('❎'))
-  .then(r => r.message.edit(embed))
-  .then(message => {
+  .then(r => {
+
+      delete require.cache[require.resolve("../services/dailies.js")];
+      const dailies = require("../services/dailies.js");
+      dailies.fractals.then(fractals => setDailyString(fractals, r.message));
+
       // createReactionCollector - responds on each react, AND again at the end.
-      const collector = message
+      const collector = r.message
           .createReactionCollector(reactionFilter);
 
       // set collector events
@@ -105,6 +94,25 @@ exports.run = async (client, message, args) => {
   })
   .catch(console.log);
 };
+
+function setDailyString(fractals, message) {
+    const serverEmojis = message.guild.emojis;
+    const dailyString = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
+
+    const newEmbed = new Discord.RichEmbed({
+        title: embed.title,
+        description: embed.description,
+        thumbnail: embed.thumbnail,
+        color: embed.color,
+        fields: [
+            {name: 'Dailies', value: dailyString},
+            embed.fields[1], embed.fields[2]
+        ]
+    });
+
+    message.edit(newEmbed).catch(console.log);
+    embed = newEmbed;
+}
 
 exports.help = {
     usage: 'Soma Termin [Uhrzeit]',
