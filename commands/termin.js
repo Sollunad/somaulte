@@ -1,11 +1,12 @@
 const Discord = require("discord.js");
-const dailies = require("../services/dailies.js");
 
 exports.run = async (client, message, args) => {
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
   const serverEmojis = message.guild.emojis;
+  delete require.cache[require.resolve("../services/dailies.js")];
+  const dailies = require("../services/dailies.js");
   const fractals = await dailies.fractals;
   const dailyString = await serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
 
@@ -23,13 +24,26 @@ exports.run = async (client, message, args) => {
       ]
   });
 
+    let embedWithoutDaily = new Discord.RichEmbed({
+        title: embed.title,
+        description: embed.description,
+        thumbnail: embed.thumbnail,
+        color: embed.color,
+        fields: [
+            {name: 'Dailies', value: "Lädt..."},
+            {name: 'Zugesagt ✅', value: emptyString},
+            {name: 'Abgesagt ❎', value: emptyString}
+        ]
+    });
+
   // add reaction emoji to message
-  await message.channel.send(embed)
+  message.channel.send(embedWithoutDaily)
   .then(msg => msg.react('✅'))
   .then(r => r.message.react('❎'))
-  .then(mReaction => {
+  .then(r => r.message.edit(embed))
+  .then(message => {
       // createReactionCollector - responds on each react, AND again at the end.
-      const collector = mReaction.message
+      const collector = message
           .createReactionCollector(reactionFilter);
 
       // set collector events
@@ -73,13 +87,12 @@ exports.run = async (client, message, args) => {
         const newEmbed = new Discord.RichEmbed({
             title: embed.title,
             description: embed.description,
-            thumbnail: {
-              url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
-            },
-            color: 12470271,
+            thumbnail: embed.thumbnail,
+            color: embed.color,
             fields: [
-              {name: 'Dailies', value: dailyString},
-              embedYesField, embedNoField ]
+                embed.fields[0],
+              embedYesField, embedNoField
+            ]
         });
 
         r.remove(user).catch(console.log);
