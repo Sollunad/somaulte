@@ -37,8 +37,11 @@ exports.run = (client, message, args) => {
       collector.on('collect', r => {
         if (!r.users.some(user => !user.bot)) return;
 
-        let yes = embedObject.fields[1].value.split("\n");
-        let no = embedObject.fields[2].value.split("\n");
+        let yesField = embedObject.fields[1];
+        let noField = embedObject.fields[2];
+
+        let yes = yesField.value.split("\n");
+        let no = noField.value.split("\n");
 
         let user = r.users.filter(user => !user.bot).first();
         let reactor = user.username;
@@ -58,13 +61,13 @@ exports.run = (client, message, args) => {
           }
         }
 
-        embedObject.fields[1].value = yes.join('\n');
-        if (embedObject.fields[1].value == '') {
-            embedObject.fields[1].value = emptyString;
+        yesField.value = yes.join('\n');
+        if (yesField.value == '') {
+            yesField.value = emptyString;
         }
-        embedObject.fields[2].value = no.join('\n');
-        if (embedObject.fields[2].value == '') {
-            embedObject.fields[2].value = emptyString;
+        noField.value = no.join('\n');
+        if (noField.value == '') {
+            noField.value = emptyString;
         }
 
         r.remove(user).catch(console.log);
@@ -72,15 +75,12 @@ exports.run = (client, message, args) => {
         const embed = new Discord.RichEmbed(embedObject);
         r.message.edit(embed).catch(console.log);
       });
-  })
+  });
 };
 
 function setDailyString(fractals, message) {
     const serverEmojis = message.guild.emojis;
-    const dailyString = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
-
-    embedObject.fields[0].value = dailyString;
-
+    embedObject.fields[0].value = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
     const embed = new Discord.RichEmbed(embedObject);
     message.edit(embed).catch(console.log);
 }
