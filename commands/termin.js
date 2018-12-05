@@ -76,6 +76,7 @@ exports.run = (client, message, args) => {
         r.message.edit(embed).catch(console.log);
       });
   });
+  message.delete();
 };
 
 function setDailyString(fractals, message) {
