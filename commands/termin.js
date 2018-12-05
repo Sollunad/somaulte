@@ -61,11 +61,11 @@ exports.run = (client, message, args) => {
           }
         }
 
-        yesField.value = yes.join('\n');
+        yesField.value = yes.sort().join('\n');
         if (yesField.value == '') {
             yesField.value = emptyString;
         }
-        noField.value = no.join('\n');
+        noField.value = no.sort().join('\n');
         if (noField.value == '') {
             noField.value = emptyString;
         }
