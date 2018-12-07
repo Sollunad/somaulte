@@ -1,5 +1,5 @@
 const wingEncs = [4,3,4,4,4,3];
-const maxWing = 6;
+const maxWing = wingEncs.length;
 const progress = require("../services/progress.js");
 const bosses = require("../data/bosses.json");
 const printer = require("../util/printProgress.js");
