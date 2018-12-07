@@ -6,19 +6,24 @@ function printProgress(arr) {
     arr.slice(1).forEach(function(row) {
       maxWidth.push(row[0].length);
     });
+    console.log(maxWidth);
 
     let output = [];
 
-    arr.forEach(function(row) {
-      row.forEach(function(data, index) {
-        if (!output.index) output[index] = [];
-        output[index] = data.padStart(maxWidth[index], ' ');
+    arr.forEach(function(row, rowIndex) {
+      row.forEach(function(col, colIndex) {
+        if (!output[colIndex]) output[colIndex] = [];
+        output[colIndex].push(pad(col, maxWidth[rowIndex]));
       });
     });
 
     let outputString = output.map(r => r.join("|")).join("\n");
-    return outputString;
-    console.log(outputString);  
+    console.log(outputString);
+    return "```" + outputString + "```";
+}
+
+function pad(str, len) {
+  return str.padStart((str.length + len) /2, ' ').padEnd(len, ' ');
 }
 
 /*
