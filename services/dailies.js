@@ -1,6 +1,6 @@
 const sf = require('snekfetch');
 
-exports.fractals = t4Dailies();
+exports.fractals = t4Dailies;
 
 async function t4Dailies() {
     const fractals = await getFractals();

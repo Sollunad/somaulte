@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const dailies = require("../services/dailies.js");
 
 let embedObject;
 
@@ -27,9 +28,7 @@ exports.run = (client, message, args) => {
   .then(r => r.message.react('❎'))
   .then(r => {
 
-      delete require.cache[require.resolve("../services/dailies.js")];
-      const dailies = require("../services/dailies.js");
-      dailies.fractals.then(fractals => setDailyString(fractals, r.message));
+      dailies.fractals().then(fractals => setDailyString(fractals, r.message));
 
       const collector = r.message
           .createReactionCollector(reactionFilter);

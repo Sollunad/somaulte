@@ -25,9 +25,3 @@ function printProgress(arr) {
 function pad(str, len) {
   return str.padStart((str.length + len) /2, ' ').padEnd(len, ' ');
 }
-
-/*
- [Boss, VG, Gorse],
- [Daniel, X, X]
-
-*/
