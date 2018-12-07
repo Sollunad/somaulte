@@ -21,7 +21,6 @@ async function getWings() {
     for (const raid of await raids) {
         const url = await "https://api.guildwars2.com/v2/raids/" + raid;
         const response = await sf.get(url);
-        console.log(response.body);
         const wingsFromRaid = await response.body.wings;
         wings = await wings.concat(wingsFromRaid);
     }
@@ -32,7 +31,6 @@ async function getWings() {
 async function getRaids() {
     const url = "https://api.guildwars2.com/v2/raids";
     const response = await sf.get(url);
-    console.log(response.body);
     return await response.body;
 }
 

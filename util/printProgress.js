@@ -6,7 +6,6 @@ function printProgress(arr) {
     arr.slice(1).forEach(function(row) {
       maxWidth.push(row[0].length);
     });
-    console.log(maxWidth);
 
     let output = [];
 
@@ -18,7 +17,6 @@ function printProgress(arr) {
     });
 
     let outputString = output.map(r => r.join("|")).join("\n");
-    console.log(outputString);
     return "```" + outputString + "```";
 }
 
