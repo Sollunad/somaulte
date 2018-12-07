@@ -2,7 +2,7 @@ const sf = require('snekfetch');
 const users = require('../data/userdata.json');
 const bosses = require('./bosses.js');
 
-exports.raid = raidProgress();
+exports.raid = raidProgress;
 
 async function raidProgress() {
     const allBosses = await bosses.all;
@@ -16,6 +16,7 @@ async function raidProgress() {
         };
         const url = 'https://api.guildwars2.com/v2/account/raids';
         const response = await sf.get(url, options);
+        console.log(response.body);
         const doneBosses = await response.body;
 
         let checkBosses = [];
