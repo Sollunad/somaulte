@@ -1,14 +1,28 @@
-exports.print = printProgress();
+exports.print = printProgress;
 
 function printProgress(arr) {
-    let maxWidth = [];
+    let maxWidth = [6];
 
-    arr.forEach(function(row) {
-       for (let i = 0; i < row.length; i++) {
-           if (!maxWidth[i]) maxWidth[i] = row[i].length;
-           else if (row[i].length > maxWidth[i]) maxWidth[i] = row[i].length;
-       }
+    arr.slice(1).forEach(function(row) {
+      maxWidth.push(row[0].length);
     });
 
+    let output = [];
 
+    arr.forEach(function(row) {
+      row.forEach(function(data, index) {
+        if (!output.index) output[index] = [];
+        output[index] = data.padStart(maxWidth[index], ' ');
+      });
+    });
+
+    let outputString = output.map(r => r.join("|")).join("\n");
+    return outputString;
+    console.log(outputString);  
 }
+
+/*
+ [Boss, VG, Gorse],
+ [Daniel, X, X]
+
+*/
