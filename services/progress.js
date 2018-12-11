@@ -16,7 +16,6 @@ async function raidProgress() {
         };
         const url = 'https://api.guildwars2.com/v2/account/raids';
         const response = await sf.get(url, options);
-        console.log(response.body);
         const doneBosses = await response.body;
 
         let checkBosses = [];

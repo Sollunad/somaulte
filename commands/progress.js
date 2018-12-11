@@ -9,7 +9,9 @@ exports.run = async (client, message, args) => {
     console.log(start + " " + end);
     const raidProgress = await progress.raid();
     let output = [];
-    const title = ['  Boss'].concat(bosses.slice(start, end));
+    let title = ['Boss'].concat(bosses.slice(start, end));
+    const maxLength = title.map(e => e.length).reduce(max, 0);
+    title = title.map(e => e.padStart(maxLength, ' '));
     output.push(title);
     for (const user of await raidProgress) {
         const row = [await user.name].concat(await user.progress.slice(start, end));
@@ -33,3 +35,7 @@ exports.help = {
     usage: 'Soma Progress',
     desc: 'Zeigt den Raid-Progress aller hinterlegten Spieler an'
 };
+
+function max(a, b) {
+    return a > b? a : b;
+}

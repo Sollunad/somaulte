@@ -1,7 +1,7 @@
 exports.print = printProgress;
 
 function printProgress(arr) {
-    let maxWidth = [6];
+    let maxWidth = [0];
 
     arr.slice(1).forEach(function(row) {
       maxWidth.push(row[0].length);
@@ -17,6 +17,7 @@ function printProgress(arr) {
     });
 
     let outputString = output.map(r => r.join("|")).join("\n");
+    console.log(outputString);
     return "```" + outputString + "```";
 }
 
