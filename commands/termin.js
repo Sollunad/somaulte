@@ -4,6 +4,7 @@ const dailies = require("../services/dailies.js");
 let embedObject;
 
 exports.run = (client, message, args) => {
+  if (!message.guild) return;
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
