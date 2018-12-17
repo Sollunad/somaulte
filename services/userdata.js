@@ -4,13 +4,9 @@ exports.add = addUser;
 exports.remove = removeUser;
 exports.list = listUser;
 
-async function addUser(name, key) {
+async function addUser(user) {
     const stmt = 'INSERT INTO userdata SET ?';
-    const values = {
-        name: name,
-        apikey: key
-    }
-    db.queryV(stmt, values);
+    db.queryV(stmt, user);
 }
 
 async function removeUser(name) {
@@ -19,6 +15,10 @@ async function removeUser(name) {
 }
 
 async function listUser() {
-
+    const stmt = 'SELECT * FROM userdata';
+    try {
+      return await db.query(stmt);
+    } catch(e) {
+      console.log(e);
+    }
 }
-

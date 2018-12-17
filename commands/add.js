@@ -1,11 +1,12 @@
 const Discord = require("discord.js");
+const userdata = require('../services/userdata.js');
 
 exports.run = (client, message, args) => {
     const user = {
         "name": args[0],
-        "key": args[1]
+        "apikey": args[1]
     };
-    client.userdata.push("arr", user);
+    userdata.add(user);
     message.channel.send(`User ${user.name} wurde hinzugefügt!`);
     message.delete();
 };

@@ -1,13 +1,15 @@
 const sf = require('snekfetch');
 const bosses = require('./bosses.js');
+const userdata = require('./userdata.js');
 
 exports.raid = raidProgress;
 
-async function raidProgress(users) {
+async function raidProgress() {
     const allBosses = await bosses.all;
+    const users = await userdata.list();
     let progress = [];
-    for (const user of users) {
-        const key = user.key;
+    for (const user of await users) {
+        const key = user.apikey;
         const response = await fetchProgress(key);
         const doneBosses = await response.body;
 

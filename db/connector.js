@@ -11,18 +11,23 @@ con.connect(function(err) {
 });
 
 function query(command) {
-    con.query(command, responseHandler);
+  return new Promise( function(resolve, reject) {
+    con.query(command, (err,rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
 }
 
 function queryV(command, values) {
-    con.query(command, values, responseHandler);
+    return new Promise( (resolve, reject) => {
+      con.query(command, values, (err,rows) => {
+        if (err) return reject(err);
+        resolve(rows);
+      });
+    });
 }
 
 function close() {
     con.close();
-}
-
-function responseHandler(err, result) {
-    if (err) console.log(err);
-    else return result;
 }
