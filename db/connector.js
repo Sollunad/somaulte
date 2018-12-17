@@ -2,13 +2,9 @@ const config = require("./config.json");
 const sql = require('mysql');
 const con = sql.createConnection(config);
 
+exports.close = close;
 exports.query = query;
 exports.queryV = queryV;
-exports.close = close;
-
-con.connect(function(err) {
-    if (err) throw err;
-});
 
 function query(command) {
   return new Promise( function(resolve, reject) {

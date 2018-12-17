@@ -4,14 +4,16 @@ exports.add = addUser;
 exports.remove = removeUser;
 exports.list = listUser;
 
-async function addUser(user) {
+function addUser(user) {
     const stmt = 'INSERT INTO userdata SET ?';
     db.queryV(stmt, user);
+    db.close();
 }
 
-async function removeUser(name) {
+function removeUser(name) {
     const stmt = 'DELETE FROM userdata WHERE name = ?';
     db.queryV(stmt, name);
+    db.close();
 }
 
 async function listUser() {
@@ -21,4 +23,5 @@ async function listUser() {
     } catch(e) {
       console.log(e);
     }
+    db.close();
 }
