@@ -1,3 +1,4 @@
+//TODO: wingEncs aus API auslesen
 const wingEncs = [4,3,4,4,4,3];
 const maxWing = wingEncs.length;
 const progress = require("../services/progress.js");
