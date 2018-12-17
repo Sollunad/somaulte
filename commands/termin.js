@@ -43,8 +43,8 @@ exports.run = (client, message, args) => {
         let yes = yesField.value.split("\n");
         let no = noField.value.split("\n");
 
-        let user = r.users.filter(user => !user.bot).first();
-        let reactor = user.username;
+        const user = r.users.filter(user => !user.bot).first();
+        const reactor = user.username;
 
         //TODO u.equals?
         if (r.emoji.name === '✅') {
@@ -80,8 +80,8 @@ exports.run = (client, message, args) => {
 };
 
 function setDailyString(fractals, message) {
-    const serverEmojis = message.guild.emojis;
-    embedObject.fields[0].value = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
+    const serverEmoji = message.guild.emojis;
+    embedObject.fields[0].value = serverEmoji.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
     const embed = new Discord.RichEmbed(embedObject);
     message.edit(embed).catch(console.log);
 }

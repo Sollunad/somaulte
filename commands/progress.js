@@ -1,7 +1,7 @@
 const wingEncs = [4,3,4,4,4,3];
 const maxWing = wingEncs.length;
 const progress = require("../services/progress.js");
-const bosses = require("../data/bosses.json");
+const bosses = require("../data/bossAbbreviations.json");
 const printer = require("../util/printProgress.js");
 
 exports.run = async (client, message, args) => {
