@@ -80,12 +80,12 @@ exports.run = (client, message, args) => {
 
 function setDailyString(fractals, message) {
     const serverEmojis = message.guild.emojis;
-    embedObject.fields[0].value = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) != -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
+    embedObject.fields[0].value = serverEmojis.filter(emoji => fractals.indexOf(emoji.name) !== -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
     const embed = new Discord.RichEmbed(embedObject);
     message.edit(embed).catch(console.log);
 }
 
 exports.help = {
-    usage: 'Soma Termin [Uhrzeit]',
+    usage: 'Soma Termin <Uhrzeit>',
     desc: 'Erstellt einen neuen Termin'
 };
