@@ -10,7 +10,7 @@ async function addUser(user) {
       await db.queryV(stmt, user);
       return `User ${user.name} wurde hinzugefügt!`;
     } catch(e) {
-      return "Fehler beim Hinzufügen. Gibt es diesen Namen schon?";
+      return `Fehler beim Hinzufügen von ${user.name}. Gibt es diesen Namen schon?``;
     }
 }
 
