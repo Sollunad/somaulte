@@ -7,13 +7,11 @@ const printer = require("../util/printProgress.js");
 
 exports.run = async (client, message, args) => {
     const [start, end] = getEncId(args[0]);
-    console.log(start + " " + end);
     const raidProgress = await progress.raid();
-    let output = [];
     let title = ['Boss'].concat(bosses.slice(start, end));
     const maxLength = title.map(e => e.length).reduce(max, 0);
     title = title.map(e => e.padStart(maxLength, ' '));
-    output.push(title);
+    let output = [title];
     for (const user of raidProgress) {
         const row = [user.name].concat(user.progress.slice(start, end));
         output.push(row);

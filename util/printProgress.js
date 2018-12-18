@@ -17,7 +17,6 @@ function printProgress(arr) {
     });
 
     let outputString = output.map(r => r.join("|")).join("\n");
-    console.log(outputString);
     return "```" + outputString + "```";
 }
 
