@@ -10,15 +10,19 @@ async function raidProgress() {
     let progress = [];
     for (const user of users) {
         const key = user.apikey;
-        const response = await fetchProgress(key);
-        const doneBosses = response.body;
+        try {
+          const response = await fetchProgress(key);
+          const doneBosses = response.body;
 
-        let xArray = [];
-        for (const boss of allBosses) {
-            if (doneBosses.indexOf(boss) !== -1) xArray.push("X");
-            else xArray.push(" ");
+          let xArray = [];
+          for (const boss of allBosses) {
+              if (doneBosses.indexOf(boss) !== -1) xArray.push("X");
+              else xArray.push(" ");
+          }
+          progress.push({name: user.name, progress: xArray});
+        } catch (e) {
+          console.log(`${user.name} mit API-Key ${user.apikey} existiert nicht!`);
         }
-        progress.push({name: user.name, progress: xArray});
     }
     return progress;
 }

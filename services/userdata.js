@@ -4,16 +4,19 @@ exports.add = addUser;
 exports.remove = removeUser;
 exports.list = listUser;
 
-function addUser(user) {
+async function addUser(user) {
     const stmt = 'INSERT INTO userdata SET ?';
-    db.queryV(stmt, user);
-    db.close();
+    try {
+      await db.queryV(stmt, user);
+      return `User ${user.name} wurde hinzugefügt!`;
+    } catch(e) {
+      return "Fehler beim Hinzufügen. Gibt es diesen Namen schon?";
+    }
 }
 
 function removeUser(name) {
     const stmt = 'DELETE FROM userdata WHERE name = ?';
     db.queryV(stmt, name);
-    db.close();
 }
 
 async function listUser() {
@@ -23,5 +26,4 @@ async function listUser() {
     } catch(e) {
       console.log(e);
     }
-    db.close();
 }

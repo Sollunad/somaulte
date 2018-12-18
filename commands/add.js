@@ -1,13 +1,13 @@
 const Discord = require("discord.js");
 const userdata = require('../services/userdata.js');
 
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     const user = {
         "name": args[0],
         "apikey": args[1]
     };
-    userdata.add(user);
-    message.channel.send(`User ${user.name} wurde hinzugefügt!`);
+    const returnMessage = await userdata.add(user);
+    message.channel.send(returnMessage);
     message.delete();
 };
 
