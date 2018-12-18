@@ -8,14 +8,14 @@ async function raidProgress() {
     const allBosses = await bosses.all;
     const users = await userdata.list();
     let progress = [];
-    for (const user of users) {
+    for (const user of await users) {
         const key = user.apikey;
         const response = await fetchProgress(key);
-        const doneBosses = response.body;
+        const doneBosses = await response.body;
 
         let xArray = [];
-        for (const boss of allBosses) {
-            if (doneBosses.indexOf(boss) !== -1) xArray.push("X");
+        for (const boss of await allBosses) {
+            if (await doneBosses.indexOf(boss) !== -1) xArray.push("X");
             else xArray.push(" ");
         }
         progress.push({name: user.name, progress: xArray});

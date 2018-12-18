@@ -6,32 +6,32 @@ async function getEncounters(){
     const wings = await getWings();
     let encounters = [];
 
-    wings.forEach(function(wing) {
+    await wings.forEach(function(wing) {
         const encsFromWing = wing.events.map(getEncID);
         encounters = encounters.concat(encsFromWing);
     });
 
-    return encounters;
+    return await encounters;
 }
 
 async function getWings() {
     const raids = await getRaids();
     let wings = [];
 
-    for (const raid of raids) {
+    for (const raid of await raids) {
         const url = "https://api.guildwars2.com/v2/raids/" + raid;
         const response = await sf.get(url);
-        const wingsFromRaid = response.body.wings;
-        wings = wings.concat(wingsFromRaid);
+        const wingsFromRaid = await response.body.wings;
+        wings = await wings.concat(wingsFromRaid);
     }
 
-    return wings;
+    return await wings;
 }
 
 async function getRaids() {
     const url = "https://api.guildwars2.com/v2/raids";
     const response = await sf.get(url);
-    return response.body;
+    return await response.body;
 }
 
 function getEncID(enc) {
