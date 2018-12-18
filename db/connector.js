@@ -25,5 +25,5 @@ function queryV(command, values) {
 }
 
 function close() {
-    con.close();
+    con.end();
 }
