@@ -12,11 +12,11 @@ exports.run = async (client, message, args) => {
     const maxLength = title.map(e => e.length).reduce(max, 0);
     title = title.map(e => e.padStart(maxLength, ' '));
     let output = [title];
-    for (const user of await raidProgress) {
-        const row = [await user.name].concat(await user.progress.slice(start, end));
-        output.push(await row);
+    for (const user of raidProgress) {
+        const row = [user.name].concat(user.progress.slice(start, end));
+        output.push(row);
     }
-    message.channel.send(printer.print(await output));
+    message.channel.send(printer.print(output));
 };
 
 function getEncId(wing) {
