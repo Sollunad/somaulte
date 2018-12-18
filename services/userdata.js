@@ -17,7 +17,7 @@ function removeUser(name) {
 }
 
 async function listUser() {
-    const stmt = 'SELECT * FROM userdata';
+    const stmt = 'SELECT * FROM userdata ORDER BY name';
     try {
       return await db.query(stmt);
     } catch(e) {
