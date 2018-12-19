@@ -1,17 +1,17 @@
 const config = require("./config.json");
 const sql = require('mysql');
-const con = sql.createConnection(config);
 
-exports.close = close;
 exports.query = query;
 exports.queryV = queryV;
 
 function query(command) {
+  const con = sql.createConnection(config);
   return new Promise( function(resolve, reject) {
     con.query(command, (err,rows) => {
       if (err) return reject(err);
       resolve(rows);
     });
+    con.end();
   });
 }
 
@@ -21,9 +21,6 @@ function queryV(command, values) {
         if (err) return reject(err);
         resolve(rows);
       });
+      con.end();
     });
-}
-
-function close() {
-    con.end();
 }
