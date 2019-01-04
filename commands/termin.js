@@ -5,12 +5,21 @@ let embedObject;
 
 exports.run = (client, message, args) => {
   if (!message.guild) return;
+  let uhrzeit, morgen;
+
+  if (args[0] === "m" || args[0] === "M") {
+      uhrzeit = args[1];
+      morgen = true;
+  } else {
+      uhrzeit = args[0];
+      morgen = false;
+  }
   const reactionFilter = (reaction, user) => reaction.emoji.name === '✅' || reaction.emoji.name === '❎';
   const emptyString = "Niemand";
 
   embedObject = {
       title: 'Nächster Fraktal-Run!',
-      description: `Vorschlag: **${args[0]} Uhr**`,
+      description: `Vorschlag: **${morgen? 'Morgen, ' : ''}${uhrzeit} Uhr**`,
       thumbnail: {
           url: 'https://wiki.guildwars2.com/images/3/38/Daily_Fractals.png'
       },
@@ -29,7 +38,7 @@ exports.run = (client, message, args) => {
   .then(r => r.message.react('❎'))
   .then(r => {
 
-      dailies.fractals().then(fractals => setDailyString(fractals, r.message));
+      dailies.fractals(morgen).then(fractals => setDailyString(fractals, r.message));
 
       const collector = r.message
           .createReactionCollector(reactionFilter);
@@ -80,6 +89,7 @@ exports.run = (client, message, args) => {
 };
 
 function setDailyString(fractals, message) {
+    console.log(fractals);
     const serverEmoji = message.guild.emojis;
     embedObject.fields[0].value = serverEmoji.filter(emoji => fractals.indexOf(emoji.name) !== -1).map(emoji => emoji.toString() + " " + emoji.name).join("\n");
     const embed = new Discord.RichEmbed(embedObject);
@@ -87,6 +97,6 @@ function setDailyString(fractals, message) {
 }
 
 exports.help = {
-    usage: 'Soma Termin <Uhrzeit>',
+    usage: 'Soma Termin <Uhrzeit> / Soma Termin m <Uhrzeit>',
     desc: 'Erstellt einen neuen Termin'
 };
